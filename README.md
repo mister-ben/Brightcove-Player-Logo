@@ -1,6 +1,8 @@
 Brightcove Player Logo
 ======================
-These SWF and javascript plugins add logo overlays to a player to compliment the existing options to add logos per-video and per-account.
+These SWF and javascript plugins add logo overlays to a Video Cloud player to compliment the existing options to add logos per-video and per-account.
+
+_Unoffical example — not supported by Brightcove_
 
 ##SWF Plugin
 
