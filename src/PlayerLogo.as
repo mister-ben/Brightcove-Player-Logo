@@ -23,12 +23,20 @@ package
 	 */
 	public class PlayerLogo extends CustomModule 
 	{
-		// Things to customise
-		const LOG_TO_JAVASCRIPT:Boolean = true; // Log messages to Javascript console, if available
-		private var _logoURL:String = "http://cs1.brightcodes.net/ben/img/genericlogo.png"; // Your image
-		private var _logoParamName:String = "customLogoUrl"; // The name of a param that can be used in the publishing code to override the image URL
-		private var _logoOffsetX:int = 10; // Offset from right
-		private var _logoOffsetY:int = 30; // Offset from bottom
+		/**
+		 * Player logo plugin for Video Cloud players
+		 * 
+		 * @param LOG_TO_JAVASCRIPT	If true writes log messages to browser's javascript console if posisble
+		 * @param logoURL	Default logo URL
+		 * @param logoParamName	The name of a player parameter that can be used to override the logo URL
+		 * @param logoOffsetX	Pixels to leave on the right of the logo
+		 * @param logoOffsetY	Pixels to leave below the logo
+		*/
+		const LOG_TO_JAVASCRIPT:Boolean = false;
+		private var logoURL:String = "http://cs1.brightcodes.net/ben/img/genericlogo.png"; 
+		private var logoParamName:String = "customLogoUrl"; 
+		private var logoOffsetX:int = 10;
+		private var logoOffsetY:int = 30;
 		
 		private var _videoModule:VideoPlayerModule;
 		private var _experienceModule:ExperienceModule;
@@ -47,14 +55,14 @@ package
 			_advertisingModule = player.getModule(APIModules.ADVERTISING) as AdvertisingModule;
 			
 			// If a value has been given to override the image, use it if it is a valid image URL
-			var customUrl:String = _experienceModule.getPlayerParameter(_logoParamName);
+			var customUrl:String = _experienceModule.getPlayerParameter(logoParamName);
 			var regex:RegExp = /(http(s?):)|([\/|.|\w|\s])*\.(?:jpg|jpeg|gif|png)/;
 			if(regex.test(customUrl)) {
-				_logoURL = customUrl;
+				logoURL = customUrl;
 				log("Using URL from customLogoUrl: " + customUrl);
 			}
 			else {
-				log("No or invlaid value for customLogoUrl");
+				log("No or invalid value for customLogoUrl");
 			}
 			
 			if (_experienceModule.getReady()) {
@@ -66,7 +74,7 @@ package
 		
 		private function onTemplateReady(event: ExperienceEvent): void {
 			log("Template ready");
-			log("Logo URL: " + _logoURL);
+			log("Logo URL: " + logoURL);
 			setup();
 		}
 		
@@ -96,7 +104,7 @@ package
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loadError);
 			_loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loadError);
-			_loader.load(new URLRequest(_logoURL));
+			_loader.load(new URLRequest(logoURL));
 			
 		}
 		
@@ -121,11 +129,14 @@ package
 		}
 		
 		private function repositionOverlay():void {
+			/**
+			 * Positions logo in bottom right of player, using the specified offset values.
+			 * Sets intitial position, and is also called on fullscreen / resize events.
+			 */
 			log(_videoModule.getCurrentDisplayWidth().toString());
 			log(_videoModule.getCurrentDisplayHeight().toString());
-			// Move to new position
-			_loader.x = _videoModule.getCurrentDisplayWidth() - _logoOffsetX - _logoWidth;
-			_loader.y = _videoModule.getCurrentDisplayHeight() - _logoOffsetY - _logoHeight;;
+			_loader.x = _videoModule.getCurrentDisplayWidth() - logoOffsetX - _logoWidth;
+			_loader.y = _videoModule.getCurrentDisplayHeight() - logoOffsetY - _logoHeight;;
 		}
 		
 		private function showOverlay(event:Event):void {
