@@ -4,7 +4,9 @@
         var overlay = videoPlayer.overlay();
         $(overlay).html('<img id="overlaylogo" src="http://cs1.brightcodes.net/ben/img/genericlogo.png" />')
             .css({
-                position:"relative"
+                position:"fixed",
+                height:"100%",
+                width:"100%"
             });
         $("#overlaylogo").css({
             position:"absolute",
