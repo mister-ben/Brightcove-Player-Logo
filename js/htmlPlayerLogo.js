@@ -15,9 +15,9 @@
         });
     }
  
-    player = brightcove.api.getExperience();
-    videoPlayer = player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
-    experience = player.getModule(brightcove.api.modules.APIModules.EXPERIENCE);
+    var _player = brightcove.api.getExperience();
+    var videoPlayer = _player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
+    var experience = _player.getModule(brightcove.api.modules.APIModules.EXPERIENCE);
  
     if (experience.getReady()) {
         onPlayerReady();
